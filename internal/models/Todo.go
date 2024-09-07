@@ -12,4 +12,5 @@ type Todo struct {
 	IsRemoved   bool      `json:"is_removed"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+	UserID 			int       `json:"user_id"`
 }

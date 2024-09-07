@@ -42,6 +42,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          2,
@@ -53,6 +54,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          3,
@@ -64,6 +66,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          4,
@@ -75,6 +78,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          5,
@@ -86,6 +90,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          6,
@@ -97,6 +102,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          7,
@@ -108,6 +114,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          8,
@@ -119,6 +126,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   true,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          9,
@@ -130,6 +138,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          10,
@@ -141,6 +150,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          11,
@@ -152,6 +162,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   false,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          12,
@@ -163,6 +174,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   true,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 		{
 			ID:          13,
@@ -174,6 +186,7 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 			IsRemoved:   true,
 			CreatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
 			UpdatedAt:   time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC),
+			UserID:      1,
 		},
 	}
 
