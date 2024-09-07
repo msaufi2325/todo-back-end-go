@@ -8,8 +8,8 @@ type Todo struct {
 	Description string    `json:"description"`
 	Category    string    `json:"category"`
 	Priority    string    `json:"priority"`
-	IsCompleted bool      `json:"is_completed"`
-	IsRemoved   bool      `json:"is_removed"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	IsCompleted bool      `json:"isCompleted"`
+	IsRemoved   bool      `json:"isRemoved"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
