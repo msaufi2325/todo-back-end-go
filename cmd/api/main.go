@@ -31,6 +31,7 @@ func main() {
 	}
 
 	app.DB = conn
+	defer app.DB.Close()
 
 	app.Domain = "example.com"
 
