@@ -31,10 +31,20 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	// read the json payload
+	var requestPayload struct {
+		Email string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
 
 	// validate the user against database
 
-	// check pasword
+	// check password
 
 	// create a jwt user
 	u := jwtUser{
