@@ -12,8 +12,8 @@ type User struct {
 	UserName  string    `json:"username"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
 }
 
 func (u *User) PasswordMatches(plainText string) (bool, error) {
