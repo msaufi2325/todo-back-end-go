@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -26,4 +27,30 @@ func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_ = app.writeJSON(w, http.StatusOK, todos)
+}
+
+func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
+	// read the json payload
+
+	// validate the user against database
+
+	// check pasword
+
+	// create a jwt user
+	u := jwtUser{
+		ID: 1,
+		Username: "test1",
+	}
+
+	// generate tokens
+	tokens, err := app.auth.GenerateTokenPair(&u)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	log.Println(tokens.Token)
+	// go to jwt.io site to inspect the token
+	w.Write([]byte(tokens.Token))
+	
 }
