@@ -51,6 +51,8 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(tokens.Token)
 	// go to jwt.io site to inspect the token
+	refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
+	http.SetCookie(w, refreshCookie)
+
 	w.Write([]byte(tokens.Token))
-	
 }
