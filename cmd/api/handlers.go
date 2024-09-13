@@ -129,7 +129,6 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 			app.writeJSON(w, http.StatusOK, tokenPairs)
 		}
 	}
-	app.errorJSON(w, errors.New("unauthorized: no refresh token found"), http.StatusUnauthorized)
 }
 
 func (app *application ) logout(w http.ResponseWriter, r *http.Request) {
