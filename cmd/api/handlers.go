@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -61,7 +62,7 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 
 	// create a jwt user
 	u := jwtUser{
-		ID:       user.ID,
+		ID:       strconv.Itoa(user.ID),
 		Username: user.UserName,
 	}
 
@@ -86,12 +87,12 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 		if cookie.Name == app.auth.CookieName {
 			claims := &Claims{}
 			refreshToken := cookie.Value
-
 			// parse the token to get the claims
 			_, err := jwt.ParseWithClaims(refreshToken, claims, func(token *jwt.Token) (interface{}, error) {
 				return []byte(app.JWTSecret), nil
 			})
 			if err != nil {
+				log.Println("Error parsing token:", err)
 				app.errorJSON(w, errors.New("unauthorized: invalid token"), http.StatusUnauthorized)
 				return
 			}
@@ -99,6 +100,7 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 			// get the user id from the token claims
 			userID, err := strconv.Atoi(claims.Subject)
 			if err != nil {
+				log.Println("Error converting user ID:", err)
 				app.errorJSON(w, errors.New("unauthorized: invalid user ID"), http.StatusUnauthorized)
 				return
 			}
@@ -106,12 +108,13 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 			// get the user from the database
 			user, err := app.DB.GetUserByID(userID)
 			if err != nil {
+				log.Println("Error fetching user from DB:", err)
 				app.errorJSON(w, errors.New("unauthorized: user not found"), http.StatusUnauthorized)
 				return
 			}
 
 			u := jwtUser{
-				ID:       user.ID,
+				ID:       strconv.Itoa(user.ID),
 				Username: user.UserName,
 			}
 
