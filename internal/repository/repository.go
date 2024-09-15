@@ -15,4 +15,5 @@ type DatabaseRepo interface {
 	OneTodo(id int) (*models.Todo, error)
 	UpdateTodo(todo models.Todo) error
 	InsertTodo(todo models.Todo) (int, error)
+	DeleteTodoByID(id int) error
 }

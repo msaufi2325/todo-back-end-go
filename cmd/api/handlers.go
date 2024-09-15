@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/msaufi2325/todo-back-end-go/internal/models"
 )
@@ -195,8 +196,6 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("New ID:", newID)
-
 	resp := JSONResponse{
 		Error: false,
 		Message: "Todo added successfully",
@@ -207,4 +206,25 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_ = app.writeJSON(w, http.StatusCreated, resp)
+}
+
+func (app *application) DeleteTodo(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	err = app.DB.DeleteTodoByID(id)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	resp := JSONResponse{
+		Error: false,
+		Message: "Todo deleted successfully",
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, resp)
 }

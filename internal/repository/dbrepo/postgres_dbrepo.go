@@ -183,6 +183,25 @@ func (m *PostgresDBRepo) InsertTodo(todo models.Todo) (int, error) {
 	return newID, nil
 }
 
+func (m *PostgresDBRepo) DeleteTodoByID(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+		delete from
+			todos
+		where
+			id = $1
+	`
+
+	_, err := m.DB.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *PostgresDBRepo) GetUserByEmail(email string) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
