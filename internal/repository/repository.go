@@ -11,4 +11,7 @@ type DatabaseRepo interface {
 	AllTodos(id int) ([]*models.Todo, error)
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByID(id int) (*models.User, error)
+
+	OneTodo(id int) (*models.Todo, error)
+	UpdateTodo(todo models.Todo) error
 }

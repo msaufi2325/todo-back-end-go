@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/msaufi2325/todo-back-end-go/internal/models"
 )
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
@@ -134,4 +135,41 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 func (app *application ) logout(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, app.auth.GetExpiredRefreshCookie())
 	app.writeJSON(w, http.StatusOK, "Logged out")
+}
+
+func (app *application) UpdateTodo(w http.ResponseWriter, r *http.Request) {
+	var requestPayload models.Todo
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	todo, err := app.DB.OneTodo(requestPayload.ID)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	todo.Title = requestPayload.Title
+	todo.Description = requestPayload.Description
+	todo.Category = requestPayload.Category
+	todo.Priority = requestPayload.Priority
+	todo.IsCompleted = requestPayload.IsCompleted
+	todo.IsRemoved = requestPayload.IsRemoved
+	todo.UpdatedAt = requestPayload.UpdatedAt
+
+	err = app.DB.UpdateTodo(*todo)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	resp := JSONResponse{
+		Error: false,
+		Message: "Todo updated successfully",
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, resp)
 }

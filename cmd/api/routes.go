@@ -22,7 +22,9 @@ func (app *application) routes() http.Handler {
 
 	mux.Route("/todos", func(mux chi.Router) {
 		mux.Use(app.authRequired)
+
 		mux.Get("/all", app.AllTodos)
+		mux.Patch("/{id}", app.UpdateTodo)
 	})
 
 	return mux
