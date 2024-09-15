@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/msaufi2325/todo-back-end-go/internal/models"
@@ -158,7 +159,7 @@ func (app *application) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	todo.Priority = requestPayload.Priority
 	todo.IsCompleted = requestPayload.IsCompleted
 	todo.IsRemoved = requestPayload.IsRemoved
-	todo.UpdatedAt = requestPayload.UpdatedAt
+	todo.UpdatedAt = time.Now().UTC()
 
 	err = app.DB.UpdateTodo(*todo)
 	if err != nil {
