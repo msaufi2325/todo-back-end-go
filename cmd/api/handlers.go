@@ -90,8 +90,6 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 		"user_id": strconv.Itoa(user.ID),
 	}
 
-	log.Printf("auth user id: %d", user.ID)
-
 	_ = app.writeJSON(w, http.StatusOK, data)
 }
 
@@ -131,13 +129,32 @@ func (app *application) register(w http.ResponseWriter, r*http.Request) {
 		return
 	}
 
-	resp := JSONResponse{
-		Error: false,
+	// create a jwt user
+	u := jwtUser{
+		ID:       strconv.Itoa(id),
+		Username: user.UserName,
+}
+
+// generate tokens
+tokens, err := app.auth.GenerateTokenPair(&u)
+if err != nil {
+		app.errorJSON(w, err)
+		return
+}
+
+// set refresh token as a cookie
+refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
+http.SetCookie(w, refreshCookie)
+
+resp := JSONResponse{
+		Error:   false,
 		Message: "User created successfully",
-		Data: map[string]int{
-			"id": id,
+		Data: map[string]interface{}{
+				"user_id":            id,
+				"access_token":  tokens.Token,
+				"refresh_token": tokens.RefreshToken,
 		},
-	}
+}
 
 	_ = app.writeJSON(w, http.StatusCreated, resp)
 }
