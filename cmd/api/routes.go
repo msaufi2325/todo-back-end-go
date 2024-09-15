@@ -24,6 +24,7 @@ func (app *application) routes() http.Handler {
 		mux.Use(app.authRequired)
 
 		mux.Get("/all", app.AllTodos)
+		mux.Put("/0", app.AddTodo)
 		mux.Patch("/{id}", app.UpdateTodo)
 	})
 

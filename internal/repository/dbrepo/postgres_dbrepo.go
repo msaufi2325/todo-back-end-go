@@ -149,6 +149,40 @@ func (m *PostgresDBRepo) UpdateTodo(todo models.Todo) error {
 	return nil
 }
 
+func (m *PostgresDBRepo) InsertTodo(todo models.Todo) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+		insert into
+			todos (title, description, category, priority, is_completed, is_removed, created_at, updated_at, user_id)
+		values
+			($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		returning id
+	`
+	var newID int
+
+	err := m.DB.QueryRowContext(
+		ctx,
+		query,
+		todo.Title,
+		todo.Description,
+		todo.Category,
+		todo.Priority,
+		todo.IsCompleted,
+		todo.IsRemoved,
+		todo.CreatedAt,
+		todo.UpdatedAt,
+		todo.UserID,
+	).Scan(&newID)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return newID, nil
+}
+
 func (m *PostgresDBRepo) GetUserByEmail(email string) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()

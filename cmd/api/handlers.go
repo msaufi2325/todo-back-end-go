@@ -174,3 +174,37 @@ func (app *application) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 
 	_ = app.writeJSON(w, http.StatusOK, resp)
 }
+
+func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
+	var requestPayload models.Todo
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	requestPayload.CreatedAt = time.Now().UTC()
+	requestPayload.UpdatedAt = time.Now().UTC()
+	requestPayload.ID = 0 // Ensure ID is zero to avoid conflicts
+
+	newID, err := app.DB.InsertTodo(requestPayload)
+	if err != nil {
+		log.Println("Error inserting todo:", err)
+		app.errorJSON(w, err)
+		return
+	}
+
+	log.Println("New ID:", newID)
+
+	resp := JSONResponse{
+		Error: false,
+		Message: "Todo added successfully",
+		Data: map[string]int{
+			"id": newID,
+			"user_id": requestPayload.UserID,
+		},
+	}
+
+	_ = app.writeJSON(w, http.StatusCreated, resp)
+}
