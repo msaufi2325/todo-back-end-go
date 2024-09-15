@@ -265,3 +265,34 @@ func (m *PostgresDBRepo) GetUserByID(id int) (*models.User, error) {
 
 	return &user, nil
 }
+
+func (m *PostgresDBRepo) InsertUser(user models.User) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+		insert into
+			users (username, email, password, created_at, updated_at)
+		values
+			($1, $2, $3, $4, $5)
+		returning id
+	`
+
+	var newID int
+
+	err := m.DB.QueryRowContext(
+		ctx,
+		query,
+		user.UserName,
+		user.Email,
+		user.Password,
+		time.Now(),
+		time.Now(),
+	).Scan(&newID)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return newID, nil
+}

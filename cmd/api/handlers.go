@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/msaufi2325/todo-back-end-go/internal/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (app *application) Home(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +83,63 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
 	http.SetCookie(w, refreshCookie)
 
-	_ = app.writeJSON(w, http.StatusOK, tokens)
+	data := map[string]string{
+		"access_token": tokens.Token,
+		"refresh_token": tokens.RefreshToken,
+		"username": user.UserName,
+		"user_id": strconv.Itoa(user.ID),
+	}
+
+	log.Printf("auth user id: %d", user.ID)
+
+	_ = app.writeJSON(w, http.StatusOK, data)
+}
+
+func (app *application) register(w http.ResponseWriter, r*http.Request) {
+	var requestPayload struct {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	// hash the password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(requestPayload.Password), 12)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	// create a user
+	user := models.User{
+		UserName: requestPayload.Username,
+		Email:    requestPayload.Email,
+		Password: string(hashedPassword),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+	}
+
+	// insert the user into the database
+	id, err := app.DB.InsertUser(user)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	resp := JSONResponse{
+		Error: false,
+		Message: "User created successfully",
+		Data: map[string]int{
+			"id": id,
+		},
+	}
+
+	_ = app.writeJSON(w, http.StatusCreated, resp)
 }
 
 func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
@@ -188,6 +245,8 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 	requestPayload.CreatedAt = time.Now().UTC()
 	requestPayload.UpdatedAt = time.Now().UTC()
 	requestPayload.ID = 0 // Ensure ID is zero to avoid conflicts
+
+	// log.Printf("User Id: ,%d", requestPayload.UserID)
 
 	newID, err := app.DB.InsertTodo(requestPayload)
 	if err != nil {
