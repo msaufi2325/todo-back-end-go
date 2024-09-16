@@ -84,16 +84,16 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, refreshCookie)
 
 	data := map[string]string{
-		"access_token": tokens.Token,
+		"access_token":  tokens.Token,
 		"refresh_token": tokens.RefreshToken,
-		"username": user.UserName,
-		"user_id": strconv.Itoa(user.ID),
+		"username":      user.UserName,
+		"user_id":       strconv.Itoa(user.ID),
 	}
 
 	_ = app.writeJSON(w, http.StatusOK, data)
 }
 
-func (app *application) register(w http.ResponseWriter, r*http.Request) {
+func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
 		Username string `json:"username"`
 		Email    string `json:"email"`
@@ -115,9 +115,9 @@ func (app *application) register(w http.ResponseWriter, r*http.Request) {
 
 	// create a user
 	user := models.User{
-		UserName: requestPayload.Username,
-		Email:    requestPayload.Email,
-		Password: string(hashedPassword),
+		UserName:  requestPayload.Username,
+		Email:     requestPayload.Email,
+		Password:  string(hashedPassword),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}
@@ -133,28 +133,29 @@ func (app *application) register(w http.ResponseWriter, r*http.Request) {
 	u := jwtUser{
 		ID:       strconv.Itoa(id),
 		Username: user.UserName,
-}
+	}
 
-// generate tokens
-tokens, err := app.auth.GenerateTokenPair(&u)
-if err != nil {
+	// generate tokens
+	tokens, err := app.auth.GenerateTokenPair(&u)
+	if err != nil {
 		app.errorJSON(w, err)
 		return
-}
+	}
 
-// set refresh token as a cookie
-refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
-http.SetCookie(w, refreshCookie)
+	// set refresh token as a cookie
+	refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
+	http.SetCookie(w, refreshCookie)
 
-resp := JSONResponse{
+	resp := JSONResponse{
 		Error:   false,
 		Message: "User created successfully",
-		Data: map[string]interface{}{
-				"user_id":            id,
-				"access_token":  tokens.Token,
-				"refresh_token": tokens.RefreshToken,
+		Data: map[string]string{
+			"access_token":  tokens.Token,
+			"refresh_token": tokens.RefreshToken,
+			"user_id":       u.ID,
+			"username":      u.Username,
 		},
-}
+	}
 
 	_ = app.writeJSON(w, http.StatusCreated, resp)
 }
@@ -208,7 +209,7 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application ) logout(w http.ResponseWriter, r *http.Request) {
+func (app *application) logout(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, app.auth.GetExpiredRefreshCookie())
 	app.writeJSON(w, http.StatusOK, "Logged out")
 }
@@ -243,7 +244,7 @@ func (app *application) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := JSONResponse{
-		Error: false,
+		Error:   false,
 		Message: "Todo updated successfully",
 	}
 
@@ -273,10 +274,10 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := JSONResponse{
-		Error: false,
+		Error:   false,
 		Message: "Todo added successfully",
 		Data: map[string]int{
-			"id": newID,
+			"id":      newID,
 			"user_id": requestPayload.UserID,
 		},
 	}
@@ -298,7 +299,7 @@ func (app *application) DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := JSONResponse{
-		Error: false,
+		Error:   false,
 		Message: "Todo deleted successfully",
 	}
 
