@@ -274,8 +274,6 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 	requestPayload.UpdatedAt = time.Now().UTC()
 	requestPayload.ID = 0 // Ensure ID is zero to avoid conflicts
 
-	// log.Printf("User Id: ,%d", requestPayload.UserID)
-
 	newID, err := app.DB.InsertTodo(requestPayload)
 	if err != nil {
 		log.Println("Error inserting todo:", err)
