@@ -116,6 +116,13 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// check if the email is already registered
+	checkUser, err := app.DB.GetUserByEmail(requestPayload.Email)
+	if err == nil && checkUser != nil {
+		app.errorJSON(w, errors.New("you are already registered"), http.StatusBadRequest)
+		return
+	}
+
 	// hash the password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(requestPayload.Password), 12)
 	if err != nil {
@@ -285,7 +292,7 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 		Error:   false,
 		Message: "Todo added successfully",
 		Data: map[string]int{
-			"id":      newID,
+			"id": newID,
 		},
 	}
 
