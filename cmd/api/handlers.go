@@ -28,7 +28,17 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) AllTodos(w http.ResponseWriter, r *http.Request) {
-	todos, err := app.DB.AllTodos(1)
+	var requestPayload struct {
+		UserID int `json:"user_id"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	todos, err := app.DB.AllTodos(requestPayload.UserID)
 	if err != nil {
 		app.errorJSON(w, err)
 		return
