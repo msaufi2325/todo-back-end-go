@@ -133,7 +133,7 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// insert the user into the database
-	id, err := app.DB.InsertUser(user)
+	newUserId, err := app.DB.InsertUser(user)
 	if err != nil {
 		app.errorJSON(w, err)
 		return
@@ -141,7 +141,7 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 
 	// create a jwt user
 	u := jwtUser{
-		ID:       strconv.Itoa(id),
+		ID:       strconv.Itoa(newUserId),
 		Username: user.UserName,
 	}
 
@@ -286,7 +286,6 @@ func (app *application) AddTodo(w http.ResponseWriter, r *http.Request) {
 		Message: "Todo added successfully",
 		Data: map[string]int{
 			"id":      newID,
-			"user_id": requestPayload.UserID,
 		},
 	}
 
