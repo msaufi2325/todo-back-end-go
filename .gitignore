@@ -33,3 +33,5 @@ vendor/
 Thumbs.db
 
 .env
+
+postgres-data/
