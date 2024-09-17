@@ -17,4 +17,7 @@ services:
     ports:
       - '5434:5432'
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data 777
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./todos-backup.tar:/docker-entrypoint-initdb.d/todos-backup.tar
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    command: ["bash", "/docker-entrypoint-initdb.d/init-db.sh"]
