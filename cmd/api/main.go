@@ -44,12 +44,12 @@ func main() {
 	}
 
 	// read from command line
-	flag.StringVar(&app.DSN, "dsn", "host=localhost port=5434 user=postgres password=password dbname=todos sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
+	flag.StringVar(&app.DSN, "dsn", "host=localhost port=5432 user=postgres password=password dbname=todos sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
 	flag.StringVar(&app.JWTSecret, "jwt-secret", jwtSecret, "signing secret")
-	flag.StringVar(&app.JWTIssuer, "jwt-issuer", "example.com", "sigining issuer") // for development example.com is used
-	flag.StringVar(&app.JWTAudience, "jwt-audience", "example.com", "signing audience")
-	flag.StringVar(&app.CookieDomain, "cookie-domain", "localhost", "cookie domain")
-	flag.StringVar(&app.Domain, "domain", "example.com", "domain")
+	flag.StringVar(&app.JWTIssuer, "jwt-issuer", "todo-app.m-saufi.com", "sigining issuer") // for development example.com is used
+	flag.StringVar(&app.JWTAudience, "jwt-audience", "todo-app.m-saufi.com", "signing audience")
+	flag.StringVar(&app.CookieDomain, "cookie-domain", "todo-app.m-saufi.com", "cookie domain")
+	flag.StringVar(&app.Domain, "domain", "todo-app.m-saufi.com", "domain")
 	flag.Parse()
 
 	// connect to database
