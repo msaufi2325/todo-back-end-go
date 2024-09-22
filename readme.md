@@ -39,10 +39,6 @@ The backend for this Todo App is built using Go and PostgreSQL. It provides a RE
     ```sh
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o todo-backend ./cmd/api
     ```
-    or on local server
-    ```sh
-    go run ./cmd/api
-    ```
 
 #### Running the Application
 
@@ -51,6 +47,10 @@ The backend for this Todo App is built using Go and PostgreSQL. It provides a RE
 2. Run the application:
     ```sh
     ./todo-backend
+    ```
+    or on local server
+    ```sh
+    go run ./cmd/api
     ```
 
 3. The server will start on port `8081` by default. You can access the API at `http://localhost:8081`.
