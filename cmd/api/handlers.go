@@ -63,14 +63,14 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	// validate the user against database
 	user, err := app.DB.GetUserByEmail(requestPayload.Email)
 	if err != nil {
-		app.errorJSON(w, errors.New("invalid email or password"), http.StatusBadRequest)
+		app.errorJSON(w, errors.New("無効なメールアドレスまたはパスワードです"), http.StatusBadRequest)
 		return
 	}
 
 	// check password
 	valid, err := user.PasswordMatches(requestPayload.Password)
 	if err != nil || !valid {
-		app.errorJSON(w, errors.New("invalid email or password"), http.StatusBadRequest)
+		app.errorJSON(w, errors.New("無効なメールアドレスまたはパスワードです"), http.StatusBadRequest)
 		return
 	}
 
@@ -119,7 +119,7 @@ func (app *application) register(w http.ResponseWriter, r *http.Request) {
 	// check if the email is already registered
 	checkUser, err := app.DB.GetUserByEmail(requestPayload.Email)
 	if err == nil && checkUser != nil {
-		app.errorJSON(w, errors.New("user already registered, please log in or use a different email address"), http.StatusBadRequest)
+		app.errorJSON(w, errors.New("ユーザーは既に登録されています。ログインするか、別のメールアドレスを使用してください。"), http.StatusBadRequest)
 		return
 	}
 
