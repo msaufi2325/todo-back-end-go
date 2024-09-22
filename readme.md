@@ -40,7 +40,7 @@ The backend for this Todo App is built using Go and PostgreSQL. It provides a RE
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o todo-backend ./cmd/api
     ```
     or on local server
-        ```sh
+    ```sh
     go run ./cmd/api
     ```
 
