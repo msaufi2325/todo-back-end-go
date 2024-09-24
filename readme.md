@@ -44,11 +44,11 @@ The backend for this Todo App is built using Go and PostgreSQL. It provides a RE
 
 1. Start the PostgreSQL server and create a database for the application.
 
-2. Run the application:
+2. Run the application (on linux server):
     ```sh
     ./todo-backend
     ```
-    or on local server
+    or on local server (Windows or Mac)
     ```sh
     go run ./cmd/api
     ```
